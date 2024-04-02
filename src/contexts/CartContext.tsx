@@ -71,11 +71,11 @@ const CartContext = createContext<
 const CartProvider: React.FC<any> = ({ children }) => {
 	const [state, dispatch] = useReducer(cartReducer, initialState)
 
-	const add = (product: { id: string }, qty: number) => {
+	const add = (product: any, qty: number) => {
 		dispatch({ type: 'ADD', data: product, qty })
 	}
 
-	const remove = (product: { id: string }) => {
+	const remove = (product: any) => {
 		dispatch({ type: 'REMOVE', data: product })
 	}
 
