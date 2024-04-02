@@ -27,17 +27,17 @@ const ProductList = () => {
 		fetchProducts()
 	}, [])
 
-	const handleSearch = (e) => {
+	const handleSearch = (e: any) => {
 		setSearchQuery(e.target.value)
 	}
 
-	const handleSort = (e) => {
+	const handleSort = (e: any) => {
 		setSortOrder(e.target.value)
 	}
 
-	const filteredProducts = products.filter((product) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+	const filteredProducts = products.filter((product: any) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
-	filteredProducts.sort((a, b) => {
+	filteredProducts.sort((a: any, b: any) => {
 		if (sortOrder === 'priceAsc') {
 			return a.price - b.price
 		} else if (sortOrder === 'priceDesc') {
@@ -56,7 +56,7 @@ const ProductList = () => {
 
 	const displayedProduct =
 		isProducts &&
-		filteredProducts.map((val, index) => {
+		filteredProducts.map((val: any, index) => {
 			return (
 				<Link
 					href={`product/${val.id}`}
@@ -103,13 +103,13 @@ const ProductList = () => {
 													aria-hidden="true"
 													className="w-5 h-5 text-gray-500 dark:text-gray-400"
 													fill="currentColor"
-													viewbox="0 0 20 20"
+													viewBox="0 0 20 20"
 													xmlns="http://www.w3.org/2000/svg"
 												>
 													<path
-														fill-rule="evenodd"
+														fillRule="evenodd"
 														d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-														clip-rule="evenodd"
+														clipRule="evenodd"
 													/>
 												</svg>
 											</div>

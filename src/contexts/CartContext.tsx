@@ -43,7 +43,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 				localStorage.setItem('cartData', JSON.stringify(updatedProducts))
 				return { ...state, data: updatedProducts }
 			} else {
-				const newProduct = { id: action.data.id, quantity: action.qty }
+				const newProduct = { ...action.data, quantity: action.qty }
 				const updatedData = [...state.data, newProduct]
 				localStorage.setItem('cartData', JSON.stringify(updatedData))
 				return { ...state, data: updatedData }
