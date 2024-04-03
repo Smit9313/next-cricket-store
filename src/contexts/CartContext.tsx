@@ -1,10 +1,23 @@
-"use client"
-import React, { createContext, useContext, useReducer } from 'react'
+'use client'
+import React, { createContext, useContext, useReducer, ReactNode } from 'react'
 
+interface CartProviderProps {
+	children: ReactNode
+}
 // Define the types for your state and actions
-interface CartItem {
-	id: string
-	quantity: number
+export interface CartItem {
+	id: number;
+	title: string;
+	description: string;
+	price: number;
+	discountPercentage: number;
+	rating: number;
+	stock: number;
+	brand: string;
+	category: string;
+	thumbnail: string;
+	images: string[];
+	quantity?: number;
 }
 
 interface CartState {
@@ -13,13 +26,13 @@ interface CartState {
 
 interface AddAction {
 	type: 'ADD'
-	data: { id: string }
+	data: CartItem
 	qty: number
 }
 
 interface RemoveAction {
 	type: 'REMOVE'
-	data: { id: string }
+	data: CartItem
 }
 
 type CartAction = AddAction | RemoveAction
@@ -31,10 +44,10 @@ const initialState: CartState = {
 const cartReducer = (state: CartState, action: CartAction): CartState => {
 	switch (action.type) {
 		case 'ADD': {
-			const addedProduct = state.data.find((val) => val.id === action.data.id)
+			const addedProduct = state.data.find((val: CartItem) => val.id === action.data.id)
 			if (addedProduct) {
-				const updatedProducts = state.data.map((val) => {
-					if (val.id === action.data.id) {
+				const updatedProducts = state.data.map((val: CartItem) => {
+					if (val.id === action.data.id && val.quantity) {
 						return { ...val, quantity: val.quantity + action.qty }
 					} else {
 						return val
@@ -50,7 +63,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 			}
 		}
 		case 'REMOVE': {
-			const updatedProducts = state.data.filter((val) => val.id !== action.data.id)
+			const updatedProducts = state.data.filter((val: CartItem) => +val.id !== +action.data.id)
 			localStorage.setItem('cartData', JSON.stringify(updatedProducts))
 			return { ...state, data: updatedProducts }
 		}
@@ -62,16 +75,16 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 const CartContext = createContext<
 	| {
 			data: CartState['data']
-			add: (product: { id: string }, qty: number) => void
-			remove: (product: { id: string }) => void
+			add: (product: CartItem, qty: number) => void
+			remove: (product: CartItem) => void
 	  }
 	| undefined
 >(undefined)
 
-const CartProvider: React.FC<any> = ({ children }) => {
+const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 	const [state, dispatch] = useReducer(cartReducer, initialState)
 
-	const add = (product: any, qty: number) => {
+	const add = (product: CartItem, qty: number) => {
 		dispatch({ type: 'ADD', data: product, qty })
 	}
 
