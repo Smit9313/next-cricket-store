@@ -2,6 +2,7 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+
 import { CartItem, useCartContext } from '@/contexts/CartContext'
 
 const Cart = () => {

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -6,28 +6,31 @@ import toast from 'react-hot-toast'
 import { CartItem, useCartContext } from '@/contexts/CartContext'
 import Loader from '@/components/Loader'
 
-const ProductDetails = ({ params }: { params: { id: string }}) => {
-
+const ProductDetails = ({ params }: { params: { id: string } }) => {
 	const { add } = useCartContext()
 	const [product, setProduct] = useState<CartItem>()
 	const [image, setImage] = useState<string>('')
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [error, setError] = useState<string>('')
 
 	useEffect(() => {
-		function fetchProduct() {
+		async function fetchProduct() {
 			setIsLoading(true)
-			axios
-				.get(`https://dummyjson.com/products/${+params.id}`)
-				.then((res) => {
-					return res.data
+			try {
+				await axios.get(`https://dummyjson.com/products/${+params.id}`).then((res) => {
+					if (res.status === 200) {
+						setProduct(res.data)
+						setImage(res.data.images[0])
+					}
 				})
-				.then((res) => {
-					console.log(res)
-					setProduct(res)
-					setImage(res.images[0])
-					setIsLoading(false)
-				})
+			} catch (err) {
+				console.error('Error fetching product:', err)
+				setError('Product not found')
+			} finally {
+				setIsLoading(false)
+			}
 		}
+
 		fetchProduct()
 	}, [params.id])
 
@@ -36,10 +39,22 @@ const ProductDetails = ({ params }: { params: { id: string }}) => {
 		toast.success(`${product.title} has been added to your cart.`)
 	}
 
+	if (isLoading) {
+		return <Loader />
+	}
+
+	if (error) {
+		return (
+			<div className="flex flex-col items-center justify-center h-screen">
+				<p className="text-2xl font-semibold mb-4">{error}</p>
+			</div>
+		)
+	}
+
 	return (
 		<div className="font-[sans-serif] bg-white">
-			{!isLoading && product ? (
-				<div className="p-6 lg:max-w-7xl max-w-4xl mx-auto">
+			<div className="p-6 lg:max-w-7xl max-w-4xl mx-auto">
+				{product && (
 					<div className="grid items-start grid-cols-1 lg:grid-cols-5 gap-12 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-6">
 						<div className="lg:col-span-3 w-full lg:sticky top-0 text-center">
 							<div className="px-4 py-10 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] relative">
@@ -88,10 +103,8 @@ const ProductDetails = ({ params }: { params: { id: string }}) => {
 							</div>
 						</div>
 					</div>
-				</div>
-			) : (
-				<Loader />
-			)}
+				)}
+			</div>
 		</div>
 	)
 }
