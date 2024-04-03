@@ -38,7 +38,7 @@ interface RemoveAction {
 type CartAction = AddAction | RemoveAction
 
 const initialState: CartState = {
-	data: JSON.parse(localStorage.getItem('cartData') || '[]') || [],
+	data: typeof window !== 'undefined' ? JSON.parse(window.localStorage.getItem('cartData') || '[]') : [],
 }
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
