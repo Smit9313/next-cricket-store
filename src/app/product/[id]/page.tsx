@@ -9,9 +9,9 @@ import Loader from '@/components/Loader'
 const ProductDetails = ({ params }: { params: { id: string }}) => {
 
 	const { add } = useCartContext()
-	const [product, setProduct] = useState<any>({})
-	const [image, setImage] = useState('')
-	const [isLoading, setIsLoading] = useState(false)
+	const [product, setProduct] = useState<CartItem>()
+	const [image, setImage] = useState<string>('')
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 
 	useEffect(() => {
 		function fetchProduct() {

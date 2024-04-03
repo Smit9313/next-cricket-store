@@ -1,15 +1,16 @@
-"use client"
+'use client'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 
 import Loader from '@/components/Loader'
+import { CartItem } from '@/contexts/CartContext'
 
 const ProductList = () => {
-	const [products, setProducts] = useState([])
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sortOrder, setSortOrder] = useState<string>('');
+	const [products, setProducts] = useState<CartItem[]>([])
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const [searchQuery, setSearchQuery] = useState<string>('')
+	const [sortOrder, setSortOrder] = useState<string>('')
 
 	useEffect(() => {
 		function fetchProducts() {
@@ -27,17 +28,17 @@ const ProductList = () => {
 		fetchProducts()
 	}, [])
 
-	const handleSearch = (e: any) => {
+	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value)
 	}
 
-	const handleSort = (e: any) => {
+	const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSortOrder(e.target.value)
 	}
 
-	const filteredProducts = products.filter((product: any) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+	const filteredProducts = products.filter((product: CartItem) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
-	filteredProducts.sort((a: any, b: any) => {
+	filteredProducts.sort((a: CartItem, b: CartItem) => {
 		if (sortOrder === 'priceAsc') {
 			return a.price - b.price
 		} else if (sortOrder === 'priceDesc') {
@@ -56,7 +57,7 @@ const ProductList = () => {
 
 	const displayedProduct =
 		isProducts &&
-		filteredProducts.map((val: any, index) => {
+		filteredProducts.map((val: CartItem) => {
 			return (
 				<Link
 					href={`product/${val.id}`}

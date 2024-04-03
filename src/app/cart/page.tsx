@@ -2,14 +2,14 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-import { useCartContext } from '@/contexts/CartContext'
+import { CartItem, useCartContext } from '@/contexts/CartContext'
 
 const Cart = () => {
 	const { add, data, remove } = useCartContext()
 
-	const totalAmount = data.reduce((acc: any, curr: any) => acc + curr.price * curr.quantity, 0)
+	const totalAmount = data.reduce((acc: number, curr: CartItem) => acc + curr.price * curr.quantity, 0)
 
-	const handleRemove = (val: any) => {
+	const handleRemove = (val: CartItem) => {
 		remove(val)
 		toast.success(`${val.title} has been removed from your cart.`)
 	}
@@ -21,7 +21,7 @@ const Cart = () => {
 					<h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
 					<div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
 						<div className="rounded-lg md:w-2/3">
-							{data.map((val: any, index: number) => {
+							{data.map((val: CartItem, index: number) => {
 								return (
 									<div
 										className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"

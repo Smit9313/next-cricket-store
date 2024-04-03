@@ -17,7 +17,7 @@ export interface CartItem {
 	category: string;
 	thumbnail: string;
 	images: string[];
-	quantity?: number;
+	quantity: number;
 }
 
 interface CartState {
@@ -88,7 +88,7 @@ const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 		dispatch({ type: 'ADD', data: product, qty })
 	}
 
-	const remove = (product: any) => {
+	const remove = (product: CartItem) => {
 		dispatch({ type: 'REMOVE', data: product })
 	}
 
