@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
-import { CartProvider } from '@/contexts/CartContext'
 import { Toaster } from 'react-hot-toast'
+const CartProvider = dynamic(()=> import('@/contexts/CartContext'), {ssr: false})
 
 const inter = Inter({ subsets: ['latin'] })
 

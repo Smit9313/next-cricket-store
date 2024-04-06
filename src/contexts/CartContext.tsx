@@ -4,7 +4,7 @@ import React, { createContext, useContext, useReducer, ReactNode } from 'react'
 interface CartProviderProps {
 	children: ReactNode
 }
-// Define the types for your state and actions
+
 export interface CartItem {
 	id: number;
 	title: string;
@@ -38,7 +38,8 @@ interface RemoveAction {
 type CartAction = AddAction | RemoveAction
 
 const initialState: CartState = {
-	data: typeof window !== 'undefined' ? JSON.parse(window.localStorage.getItem('cartData') || '[]') : [],
+// 	data: typeof window !== 'undefined' ? JSON.parse(window.localStorage.getItem('cartData') || '[]'):[],
+	data: JSON.parse(window.localStorage.getItem('cartData') || '[]'),
 }
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
@@ -103,4 +104,6 @@ const useCartContext = () => {
 	return context
 }
 
-export { CartProvider, useCartContext }
+export default CartProvider
+
+export { useCartContext }

@@ -18,10 +18,10 @@ const ProductList = () => {
 			axios
 				.get('https://dummyjson.com/products')
 				.then((res) => {
-					return res.data
+                    return res.data
 				})
 				.then((res) => {
-					setProducts(res.products)
+                    setProducts(res.products)
 					setIsLoading(false)
 				})
 		}
@@ -77,7 +77,7 @@ const ProductList = () => {
 			)
 		})
 
-	const noPrductFound = (
+	const noProductFound = (
 		<div className="flex flex-col items-center justify-center">
 			<p className="text-2xl font-semibold mb-4">No products found for your search query.</p>
 		</div>
@@ -87,7 +87,7 @@ const ProductList = () => {
 		<>
 			<div className="mx-auto max-w-2xl lg:max-w-7xl">
 				<section className=" py-2 text-white bg-white border rounded-none h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:py-4">
-					<div className="mx-auto  w-full">
+					<div className="mx-auto w-full">
 						<div className="relative bg-gray-200 shadow-md sm:rounded-lg">
 							<div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
 								<div className="w-full md:w-1/2">
@@ -151,7 +151,7 @@ const ProductList = () => {
 				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">{displayedProduct}</div>
 			</div>
 			{isLoading && <Loader />}
-			{isNoProduct && noPrductFound}
+			{isNoProduct && noProductFound}
 		</>
 	)
 }
