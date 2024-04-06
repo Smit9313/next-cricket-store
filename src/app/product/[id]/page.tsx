@@ -3,17 +3,17 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 
-import { CartItem } from '@/contexts/CartContext'
-import Loader from '@/components/Loader'
 import { addToCart } from '@/reduxStore/slices/cartSlice'
 import { useGetProductByIdQuery } from '@/reduxStore/apis/productApi'
+import { Product } from '@/interfaces/IProduct'
+import Loader from '@/components/Loader'
 
 const ProductDetails = ({ params }: { params: { id: string } }) => {
 	const dispatch = useDispatch();
 	const { data: product, isLoading, isError } = useGetProductByIdQuery({id: params.id})
 	const [image, setImage] = useState<string>('')
 
-	const handleAddToCart = (product: CartItem, qty: number) => {
+	const handleAddToCart = (product: Product, qty: number) => {
 		dispatch(addToCart({product, qty}))
 		toast.success(`${product.title} has been added to your cart.`)
 	}

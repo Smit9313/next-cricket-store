@@ -6,8 +6,7 @@ import Header from '@/components/Header'
 import { Toaster } from 'react-hot-toast'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from '@/reduxStore/stores/store'
-import StoreProvider from './storeProvider'
-const CartProvider = dynamic(() => import('@/contexts/CartContext'), { ssr: false })
+const StoreProvider = dynamic(() => import('@/app/storeProvider'), {ssr: false})
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,11 +24,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<StoreProvider>
-					<CartProvider>
-						<Toaster position="top-center" />
-						<Header />
-						{children}
-					</CartProvider>
+					<Toaster position="top-center" />
+					<Header />
+					{children}
 				</StoreProvider>
 			</body>
 		</html>

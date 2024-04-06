@@ -4,17 +4,16 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { CartItem, useCartContext } from '@/contexts/CartContext'
 import { addToCart, cartSelector, removeFromCart } from '@/reduxStore/slices/cartSlice'
+import { Product } from '@/interfaces/IProduct'
 
 const Cart = () => {
-	const { add } = useCartContext()
 	const dispatch = useDispatch()
 	const { data } = useSelector(cartSelector)
 
-	const totalAmount = data.reduce((acc: number, curr: CartItem) => acc + curr.price * curr.quantity, 0)
+	const totalAmount = data.reduce((acc: number, curr: Product) => acc + curr.price * curr.quantity, 0)
 
-	const handleRemove = (val: CartItem) => {
+	const handleRemove = (val: Product) => {
 		dispatch(removeFromCart(val))
 		toast.success(`${val.title} has been removed from your cart.`)
 	}
@@ -26,7 +25,7 @@ const Cart = () => {
 					<h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
 					<div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
 						<div className="rounded-lg md:w-2/3">
-							{data.map((val: CartItem, index: number) => {
+							{data.map((val: Product, index: number) => {
 								return (
 									<div
 										className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
