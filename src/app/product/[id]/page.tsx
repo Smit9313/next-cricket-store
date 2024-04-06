@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 
 import { CartItem, useCartContext } from '@/contexts/CartContext'
 import Loader from '@/components/Loader'
+import { API_BASE_URL } from '@/config/constants'
 
 const ProductDetails = ({ params }: { params: { id: string } }) => {
 	const { add } = useCartContext()
@@ -17,7 +18,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
 		async function fetchProduct() {
 			setIsLoading(true)
 			try {
-				await axios.get(`https://dummyjson.com/products/${+params.id}`).then((res) => {
+				await axios.get(`${API_BASE_URL}/products/${+params.id}`).then((res) => {
 					if (res.status === 200) {
 						setProduct(res.data)
 						setImage(res.data.images[0])
