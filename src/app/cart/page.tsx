@@ -2,16 +2,20 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { CartItem, useCartContext } from '@/contexts/CartContext'
+import { addToCart, cartSelector, removeFromCart } from '@/reduxStore/slices/cartSlice'
 
 const Cart = () => {
-	const { add, data, remove } = useCartContext()
+	const { add } = useCartContext()
+	const dispatch = useDispatch()
+	const { data } = useSelector(cartSelector)
 
 	const totalAmount = data.reduce((acc: number, curr: CartItem) => acc + curr.price * curr.quantity, 0)
 
 	const handleRemove = (val: CartItem) => {
-		remove(val)
+		dispatch(removeFromCart(val))
 		toast.success(`${val.title} has been removed from your cart.`)
 	}
 
@@ -44,7 +48,7 @@ const Cart = () => {
 												<div className="flex items-center border-gray-100">
 													<button
 														className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
-														onClick={() => val.quantity > 1 && add(val, -1)}
+														onClick={() => val.quantity > 1 && dispatch(addToCart({product: val,qty: -1}))}
 														disabled={val.quantity === 1}
 													>
 														{' '}
@@ -59,7 +63,7 @@ const Cart = () => {
 													/>
 													<button
 														className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
-														onClick={() => val.quantity < 10 && add(val, 1)}
+														onClick={() => val.quantity < 10 && dispatch(addToCart({product: val,qty: 1}))}
 													>
 														{' '}
 														+{' '}

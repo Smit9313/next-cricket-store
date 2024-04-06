@@ -4,7 +4,10 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import { Toaster } from 'react-hot-toast'
-const CartProvider = dynamic(()=> import('@/contexts/CartContext'), {ssr: false})
+import { Provider as ReduxProvider } from 'react-redux'
+import { store } from '@/reduxStore/stores/store'
+import StoreProvider from './storeProvider'
+const CartProvider = dynamic(() => import('@/contexts/CartContext'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,11 +24,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<CartProvider>
-					<Toaster position="top-center" />
-					<Header />
-					{children}
-				</CartProvider>
+				<StoreProvider>
+					<CartProvider>
+						<Toaster position="top-center" />
+						<Header />
+						{children}
+					</CartProvider>
+				</StoreProvider>
 			</body>
 		</html>
 	)

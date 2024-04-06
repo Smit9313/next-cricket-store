@@ -1,13 +1,16 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
 import { CartItem, useCartContext } from '@/contexts/CartContext'
 import Loader from '@/components/Loader'
 import { API_BASE_URL } from '@/config/constants'
+import { addToCart } from '@/reduxStore/slices/cartSlice'
 
 const ProductDetails = ({ params }: { params: { id: string } }) => {
+	const dispatch = useDispatch();
 	const { add } = useCartContext()
 	const [product, setProduct] = useState<CartItem>()
 	const [image, setImage] = useState<string>('')
@@ -37,6 +40,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
 
 	const handleAddToCart = (product: CartItem, qty: number) => {
 		add(product, qty)
+		dispatch(addToCart({product, qty}))
 		toast.success(`${product.title} has been added to your cart.`)
 	}
 

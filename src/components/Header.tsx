@@ -2,10 +2,12 @@
 import React from 'react'
 import { useCartContext } from '@/contexts/CartContext'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import { cartSelector } from '@/reduxStore/slices/cartSlice'
 
 const Header = () => {
 	const router = useRouter()
-	const { data } = useCartContext()
+	const {data} = useSelector(cartSelector);
 
 	return (
 		<nav className="sticky top-0 z-10 block w-full max-w-full px-24 py-2 text-white bg-white border rounded-none shadow-md h-max border-white/80 bg-opacity-80 backdrop-blur-2xl backdrop-saturate-200 lg:py-4">

@@ -1,8 +1,8 @@
+'use client'
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import baseCreateApi from '../apis/baseCreateApi';
-import rootReducer from './rootReducer';
-
+import baseCreateApi from '@/reduxStore/apis/baseCreateApi';
+import rootReducer from '@/reduxStore/stores/rootReducer';
 
 const reducers = combineReducers({
     [baseCreateApi.reducerPath]: baseCreateApi.reducer,
