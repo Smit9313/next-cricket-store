@@ -1,45 +1,19 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import axios from 'axios'
 import toast from 'react-hot-toast'
 
-import { CartItem, useCartContext } from '@/contexts/CartContext'
+import { CartItem } from '@/contexts/CartContext'
 import Loader from '@/components/Loader'
-import { API_BASE_URL } from '@/config/constants'
 import { addToCart } from '@/reduxStore/slices/cartSlice'
+import { useGetProductByIdQuery } from '@/reduxStore/apis/productApi'
 
 const ProductDetails = ({ params }: { params: { id: string } }) => {
 	const dispatch = useDispatch();
-	const { add } = useCartContext()
-	const [product, setProduct] = useState<CartItem>()
+	const { data: product, isLoading, isError } = useGetProductByIdQuery({id: params.id})
 	const [image, setImage] = useState<string>('')
-	const [isLoading, setIsLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string>('')
-
-	useEffect(() => {
-		async function fetchProduct() {
-			setIsLoading(true)
-			try {
-				await axios.get(`${API_BASE_URL}/products/${+params.id}`).then((res) => {
-					if (res.status === 200) {
-						setProduct(res.data)
-						setImage(res.data.images[0])
-					}
-				})
-			} catch (err) {
-				console.error('Error fetching product:', err)
-				setError('Product not found')
-			} finally {
-				setIsLoading(false)
-			}
-		}
-
-		fetchProduct()
-	}, [params.id])
 
 	const handleAddToCart = (product: CartItem, qty: number) => {
-		add(product, qty)
 		dispatch(addToCart({product, qty}))
 		toast.success(`${product.title} has been added to your cart.`)
 	}
@@ -48,10 +22,10 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
 		return <Loader />
 	}
 
-	if (error) {
+	if (isError) {
 		return (
 			<div className="flex flex-col items-center justify-center h-screen">
-				<p className="text-2xl font-semibold mb-4">{error}</p>
+				<p className="text-2xl font-semibold mb-4">{isError}</p>
 			</div>
 		)
 	}
@@ -64,7 +38,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
 						<div className="lg:col-span-3 w-full lg:sticky top-0 text-center">
 							<div className="px-4 py-10 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] relative">
 								<img
-									src={image}
+									src={image || product.images[0]}
 									alt="Product"
 									className="w-full h-80 rounded object-cover"
 								/>

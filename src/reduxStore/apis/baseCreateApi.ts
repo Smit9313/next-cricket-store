@@ -12,7 +12,7 @@ import {
   const baseQuery = fetchBaseQuery({
 	baseUrl: API_BASE_URL,
 	mode: "cors",
-	credentials: "include",
+	// credentials: "include",
 	prepareHeaders: () => {
 	  // Add logic here to prepare headers
 	},

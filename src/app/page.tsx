@@ -1,32 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import axios from 'axios'
 
 import Loader from '@/components/Loader'
 import { CartItem } from '@/contexts/CartContext'
+import { useGetProductsQuery } from '@/reduxStore/apis/productApi'
 
 const ProductList = () => {
-	const [products, setProducts] = useState<CartItem[]>([])
-	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const { data, isLoading } = useGetProductsQuery({})
 	const [searchQuery, setSearchQuery] = useState<string>('')
 	const [sortOrder, setSortOrder] = useState<string>('')
-
-	useEffect(() => {
-		function fetchProducts() {
-			setIsLoading(true)
-			axios
-				.get('https://dummyjson.com/products')
-				.then((res) => {
-                    return res.data
-				})
-				.then((res) => {
-                    setProducts(res.products)
-					setIsLoading(false)
-				})
-		}
-		fetchProducts()
-	}, [])
 
 	const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.target.value)
@@ -36,21 +19,23 @@ const ProductList = () => {
 		setSortOrder(e.target.value)
 	}
 
-	const filteredProducts = products.filter((product: CartItem) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
-
-	filteredProducts.sort((a: CartItem, b: CartItem) => {
-		if (sortOrder === 'priceAsc') {
-			return a.price - b.price
-		} else if (sortOrder === 'priceDesc') {
-			return b.price - a.price
-		} else if (sortOrder === 'titleAsc') {
-			return a.title.localeCompare(b.title)
-		} else if (sortOrder === 'titleDesc') {
-			return b.title.localeCompare(a.title)
-		} else {
-			return 0
-		}
-	})
+	const filteredProducts =
+		!isLoading &&
+		data.products
+			.filter((product: CartItem) => product.title.toLowerCase().includes(searchQuery.toLowerCase()))
+			.sort((a: CartItem, b: CartItem) => {
+				if (sortOrder === 'priceAsc') {
+					return a.price - b.price
+				} else if (sortOrder === 'priceDesc') {
+					return b.price - a.price
+				} else if (sortOrder === 'titleAsc') {
+					return a.title.localeCompare(b.title)
+				} else if (sortOrder === 'titleDesc') {
+					return b.title.localeCompare(a.title)
+				} else {
+					return 0
+				}
+			})
 
 	const isProducts = !isLoading && !!filteredProducts.length
 	const isNoProduct = filteredProducts.length === 0 && !isLoading
@@ -148,7 +133,8 @@ const ProductList = () => {
 					</div>
 				</section>
 				<h2 className="mb-5 text-2xl">Products</h2>
-				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">{displayedProduct}</div>
+				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">					{displayedProduct}
+				</div>
 			</div>
 			{isLoading && <Loader />}
 			{isNoProduct && noProductFound}
