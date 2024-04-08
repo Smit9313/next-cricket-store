@@ -4,8 +4,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import { Toaster } from 'react-hot-toast'
-import { Provider as ReduxProvider } from 'react-redux'
-import { store } from '@/reduxStore/stores/store'
 const StoreProvider = dynamic(() => import('@/app/storeProvider'), {ssr: false})
 
 const inter = Inter({ subsets: ['latin'] })

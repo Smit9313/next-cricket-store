@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 
 import Loader from '@/components/Loader'
@@ -133,8 +133,7 @@ const ProductList = () => {
 					</div>
 				</section>
 				<h2 className="mb-5 text-2xl">Products</h2>
-				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">					{displayedProduct}
-				</div>
+				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">{displayedProduct}</div>
 			</div>
 			{isLoading && <Loader />}
 			{isNoProduct && noProductFound}
