@@ -6,7 +6,7 @@
 .pnp.js
 .yarn/install-state.gz
 .idea
-.env.local
+# .env.local
 
 # testing
 /coverage
